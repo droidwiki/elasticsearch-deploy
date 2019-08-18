@@ -1,7 +1,7 @@
 version: '2.4'
 
 x-elasticsearch-node: &elasticsearch-node
-  image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
+  image: docker.elastic.co/elasticsearch/elasticsearch:6.8.2
   ulimits:
     memlock:
       soft: -1
@@ -18,12 +18,10 @@ services:
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
-      - cluster.initial_master_nodes=es-node-1,es-node-2
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - node.name=es-node-1
-      - discovery.seed_hosts=es-node-2
     ports:
-      - "9200:9200"
+      - "172.16.0.2:9200:9200"
   es-node-2:
     container_name: es-node-2
     <<: *elasticsearch-node
@@ -32,10 +30,9 @@ services:
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
-      - cluster.initial_master_nodes=es-node-1,es-node-2
+      - "discovery.zen.ping.unicast.hosts=es-node-1"
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - node.name=es-node-2
-      - discovery.seed_hosts=es-node-1
 
 volumes:
   esdata1:
