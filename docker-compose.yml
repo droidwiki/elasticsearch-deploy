@@ -1,7 +1,7 @@
 version: '2.4'
 
 x-elasticsearch-node: &elasticsearch-node
-  image: docker.elastic.co/elasticsearch/elasticsearch:6.8.8
+  image: docker.elastic.co/elasticsearch/elasticsearch:6.8.21
   ulimits:
     memlock:
       soft: -1
